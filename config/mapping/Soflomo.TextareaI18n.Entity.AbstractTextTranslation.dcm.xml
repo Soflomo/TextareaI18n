@@ -1,0 +1,26 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+        http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Soflomo\TextareaI18n\Entity\AbstractTextTranslation">
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="locale"  type="string" unique="false" nullable="false" />
+        <field name="content" type="text"   unique="false" nullable="true" />
+
+        <indexes>
+            <index name="text_translations_lookup_idx" columns="locale,text_id" />
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint name="text_lookup_unique_idx" columns="locale,text_id" />
+        </unique-constraints>
+
+        <many-to-one field="text" target-entity="Soflomo\Textarea\Entity\TextInterface" inversed-by="translations">
+            <join-column name="text_id" referenced-column-name="id" on-delete="cascade" />
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>
